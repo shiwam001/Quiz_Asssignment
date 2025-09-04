@@ -22,7 +22,7 @@ const QuizPage = () => {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
 
-  // 🕒 Timer state
+  // Timer state
   const [timeLeft, setTimeLeft] = useState<number>(30);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const QuizPage = () => {
 
     const record: AnswerRecord = {
       questionId: current.id,
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex ?? -1,
       isCorrect: false,
     };
 
@@ -117,7 +117,7 @@ const QuizPage = () => {
     
     const record: AnswerRecord = {
       questionId: current.id,
-      selectedIndex: selectedIndex,
+      selectedIndex: selectedIndex ?? -1,
       isCorrect: isCorrect,
     };
     
@@ -180,25 +180,24 @@ const QuizPage = () => {
     <div className="container">
       <header className="header">
         <h1>Quiz App</h1>
-        {/* 🕒 Show Timer */}
         <div className="timer">⏳ Time Left: {timeLeft}s</div>
       </header>
       
       <ProgressBar current={currentIndex} total={total} />
       
-      <div className={`question-container ${quizState}`}>
+      <div className={question-container ${quizState}}>
         <QuestionCard
           question={current}
-          selectedIndex={selectedIndex}
+          selectedIndex={selectedIndex ?? -1}
           onSelect={handleAnswerSelect}
-          disabled={quizState !== 'question' || timeLeft === 0} // disable if time runs out
+          disabled={quizState !== 'question' || timeLeft === 0}
           showFeedback={showFeedback}
           isCorrect={isCorrect}
           correctIndex={current.correctIndex}
         />
         
         {showFeedback && (
-          <div className={`feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
+          <div className={feedback ${isCorrect ? 'correct' : 'incorrect'}}>
             <div className="feedback-icon">
               {isCorrect ? '✓' : '✗'}
             </div>
@@ -208,7 +207,7 @@ const QuizPage = () => {
             <div className="feedback-explanation">
               {isCorrect 
                 ? 'Well done!' 
-                : `The correct answer is: ${current.options[current.correctIndex]}`
+                : The correct answer is: ${current.options[current.correctIndex]}
               }
             </div>
           </div>
@@ -237,4 +236,4 @@ const QuizPage = () => {
   );
 };
 
-export default QuizPage;
+export default QuizPage;
