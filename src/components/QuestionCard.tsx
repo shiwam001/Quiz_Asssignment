@@ -3,7 +3,7 @@ import type { Question } from '../types';
 
 type Props = {
   question: Question;
-  selectedIndex: number;   // always a number now
+  selectedIndex: number;        // -1 if not selected
   onSelect: (index: number) => void;
   disabled?: boolean;
   showFeedback?: boolean;
@@ -20,49 +20,64 @@ export const QuestionCard: FC<Props> = ({
   isCorrect = false,
   correctIndex = -1
 }) => {
-  const getOptionClass = (idx: number) => {
-    let className = 'option';
-    
-    if (disabled) className += ' disabled';
-    if (selectedIndex === idx) className += ' selected';
-    
+  const getOptionClass = (idx: number): string => {
+    let className = "option";
+
+    if (disabled) className += " disabled";
+    if (selectedIndex === idx) className += " selected";
+
     if (showFeedback) {
       if (idx === correctIndex) {
-        className += ' correct';
+        className += " correct";
       } else if (selectedIndex === idx && !isCorrect) {
-        className += ' incorrect';
+        className += " incorrect";
       }
     }
-    
+
     return className;
   };
 
   return (
     <div className="card">
-      <h2 className="question" aria-live="polite">{question.question}</h2>
+      <h2 className="question" aria-live="polite">
+        {question.question}
+      </h2>
+
       <div className="options" role="list">
         {question.options.map((option, idx) => {
           const isSelected = selectedIndex === idx;
           const isCorrectAnswer = idx === correctIndex;
-          const isUserAnswer = selectedIndex === idx;
-          
+
           return (
             <button
               key={idx}
+              type="button"
               className={getOptionClass(idx)}
-              onClick={() => { if (!disabled) onSelect(idx); }}
+              onClick={() => !disabled && onSelect(idx)}
               aria-pressed={isSelected}
               disabled={disabled}
             >
-              <span className="option-index" aria-hidden>
+              <span className="option-index" aria-hidden="true">
                 {String.fromCharCode(65 + idx)}.
               </span>
               <span>{option}</span>
+
+              {/* Feedback indicators */}
               {showFeedback && isCorrectAnswer && (
-                <span className="correct-indicator" aria-label="Correct answer">✓</span>
+                <span
+                  className="correct-indicator"
+                  aria-label="Correct answer"
+                >
+                  ✓
+                </span>
               )}
-              {showFeedback && isUserAnswer && !isCorrect && (
-                <span className="incorrect-indicator" aria-label="Your answer">✗</span>
+              {showFeedback && isSelected && !isCorrect && (
+                <span
+                  className="incorrect-indicator"
+                  aria-label="Your answer (incorrect)"
+                >
+                  ✗
+                </span>
               )}
             </button>
           );
@@ -72,4 +87,4 @@ export const QuestionCard: FC<Props> = ({
   );
 };
 
-export default QuestionCard;
+export default QuestionCard;
