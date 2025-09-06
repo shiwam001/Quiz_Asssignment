@@ -185,7 +185,7 @@ const QuizPage = () => {
       
       <ProgressBar current={currentIndex} total={total} />
       
-      <div className={question-container ${quizState}}>
+      <div className={`question-container ${quizState}`}>
         <QuestionCard
           question={current}
           selectedIndex={selectedIndex ?? -1}
@@ -197,7 +197,7 @@ const QuizPage = () => {
         />
         
         {showFeedback && (
-          <div className={feedback ${isCorrect ? 'correct' : 'incorrect'}}>
+          <div className={`feedback ${isCorrect ? 'correct' : 'incorrect'}`}>
             <div className="feedback-icon">
               {isCorrect ? '✓' : '✗'}
             </div>
@@ -207,7 +207,7 @@ const QuizPage = () => {
             <div className="feedback-explanation">
               {isCorrect 
                 ? 'Well done!' 
-                : The correct answer is: ${current.options[current.correctIndex]}
+                : `The correct answer is: ${current.options[current.correctIndex]}`
               }
             </div>
           </div>
@@ -236,4 +236,4 @@ const QuizPage = () => {
   );
 };
 
-export default QuizPage;
+export default QuizPage;
